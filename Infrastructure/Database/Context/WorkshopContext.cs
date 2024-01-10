@@ -1,7 +1,7 @@
-﻿using Application.Database.Entities;
+﻿using Infrastructure.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Database
+namespace Infrastructure.Database.Context
 {
     public class WorkshopContext : DbContext
     {

@@ -7,7 +7,7 @@ namespace Application.UseCases.PostWorkshop.Validator
     {
         public PostWorkshopInputValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.WorkshopId)
                 .NotEmpty()
                 .NotNull();
         }

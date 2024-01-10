@@ -1,10 +1,11 @@
 ﻿using Application.UseCases.PostWorkshop.Input;
+using Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Application.UseCases.PostWorkshop
 {
     public interface IPostWorkshopUseCase
     {
-        Task ExecuteAsync(PostWorkshopInput input);
+        Task<Workshop> ExecuteAsync(PostWorkshopInput input);
     }
 }

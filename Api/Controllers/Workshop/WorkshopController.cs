@@ -1,32 +1,36 @@
-﻿using Application.UseCases.PostWorkshop;
+﻿using Application.UseCases.GetWorkshopWorkload;
+using Application.UseCases.PostWorkshop;
 using Application.UseCases.PostWorkshop.Input;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Api.Controllers.PostWorkshop
 {
     [ApiController]
     [Route("v1")]
-    public class PostWorkshopController : ControllerBase
+    public class WorkshopController : ControllerBase
     {
-        private readonly ILogger<PostWorkshopController> _logger;
+        private readonly ILogger<WorkshopController> _logger;
         private readonly IPostWorkshopUseCase _postWorkshopUseCase;
+        private readonly IGetWorkshopWorkloadUseCase _getWorkshopWorkload;
 
-        public PostWorkshopController(ILogger<PostWorkshopController> logger, IPostWorkshopUseCase postWorkshopUseCase)
+        public WorkshopController(ILogger<WorkshopController> logger, IPostWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload)
         {
             _logger = logger;
             _postWorkshopUseCase = postWorkshopUseCase;
+            _getWorkshopWorkload = getWorkshopWorkload;
         }
 
         [HttpPost]
-        [Route("api/post-workshop/")]
+        [Route("api/create-workshop/")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostWorkshop([FromBody] PostWorkshopInput input)
+        public async Task<IActionResult> PostWorkshop([FromBody, Required] PostWorkshopInput input)
         {
             try
             {
@@ -41,16 +45,16 @@ namespace Api.Controllers.PostWorkshop
         }
 
         [HttpGet]
-        [Route("api/get-workshop/")]
+        [Route("api/get-workshop-workload/{workShopId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetWorkshop([FromBody] PostWorkshopInput input)
+        public async Task<IActionResult> GetWorkshopWorkload([FromRoute, Required] int workShopId)
         {
             try
             {
-                await _postWorkshopUseCase.ExecuteAsync(input);
-                return Ok(input);
+                var workload = await _getWorkshopWorkload.ExecuteAsync(workShopId);
+                return Ok(workload);
             }
             catch (Exception ex)
             {
