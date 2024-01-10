@@ -1,5 +1,5 @@
 ﻿using Application.Database.Repository;
-using Infrastructure.Database;
+using Infrastructure.Database.Context;
 using Infrastructure.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

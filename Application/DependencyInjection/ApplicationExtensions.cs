@@ -1,4 +1,5 @@
-﻿using Application.UseCases.PostWorkshop;
+﻿using Application.UseCases.GetWorkshopWorkload;
+using Application.UseCases.PostWorkshop;
 using Application.UseCases.PostWorkshop.Input;
 using Application.UseCases.PostWorkshop.Validator;
 using FluentValidation;
@@ -18,6 +19,7 @@ namespace Application.DependencyInjection
         internal static void AddUseCases(this IServiceCollection services)
         {
             services.AddTransient<IPostWorkshopUseCase, PostWorkshopUseCase>();
+            services.AddTransient<IGetWorkshopWorkloadUseCase, GetWorkshopWorkloadUseCase>();            
         }
 
         internal static void AddValidators(this IServiceCollection services)
