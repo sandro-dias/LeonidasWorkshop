@@ -14,14 +14,14 @@ namespace Infrastructure.Database.Repository
             _context = context;
         }
 
-        public async Task<Workshop> GetWorkshopWorkload(long workshopId)
+        public async Task<Workshop> GetWorkshop(long workshopId)
         {
-            //TODO entender como fica o input e retorno das entidades de dominio/infra
+            //TODO: refatorar para passar e buscar uma especificação que possa pegar o ID e a data
             var workshop = await _context.Workshop.FindAsync(workshopId);
             return workshop;
         }
 
-        public async Task<Workshop> InsertWorkshop(Workshop workshop)
+        public async Task<Workshop> CreateWorkshop(Workshop workshop)
         {
             var addedWorkshop = _context.Workshop.Add(workshop);
             await _context.SaveChangesAsync();

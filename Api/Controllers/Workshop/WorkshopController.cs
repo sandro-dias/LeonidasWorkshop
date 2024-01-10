@@ -1,6 +1,8 @@
 ﻿using Application.UseCases.GetWorkshopWorkload;
 using Application.UseCases.PostWorkshop;
 using Application.UseCases.PostWorkshop.Input;
+using Application.UseCases.Workshop.CreateWorkingDay;
+using Application.UseCases.Workshop.CreateWorkingDay.Input;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,6 +19,7 @@ namespace Api.Controllers.PostWorkshop
         private readonly ILogger<WorkshopController> _logger;
         private readonly IPostWorkshopUseCase _postWorkshopUseCase;
         private readonly IGetWorkshopWorkloadUseCase _getWorkshopWorkload;
+        private readonly ICreateWorkingDayUseCase _createWorkingDayUseCase;
 
         public WorkshopController(ILogger<WorkshopController> logger, IPostWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload)
         {
@@ -35,6 +38,26 @@ namespace Api.Controllers.PostWorkshop
             try
             {
                 await _postWorkshopUseCase.ExecuteAsync(input);
+                return Ok(input);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{ClassName}] It was not possible to post the workshop. The message returned was: {@Message}", nameof(WorkshopController), ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir oficina no banco de dados.");
+            }
+        }
+
+        [HttpPost]
+        [Route("api/create-working-day/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateWorkingDay([FromBody, Required] CreateWorkingDayInput input)
+        {
+            try
+            {
+                //TODO: mover para a camada de dias de trabalho
+                await _createWorkingDayUseCase.ExecuteAsync(input);
                 return Ok(input);
             }
             catch (Exception ex)

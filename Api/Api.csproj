@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Customer\" />
+    <Folder Include="Controllers\WorkingDay\" />
     <Folder Include="Controllers\Service\" />
   </ItemGroup>
 

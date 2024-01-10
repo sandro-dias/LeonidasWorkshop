@@ -5,7 +5,7 @@ namespace Application.Database.Repository
 {
     public interface IWorkshopRepository
     {
-        Task<Workshop> InsertWorkshop(Workshop workshop);
-        Task<Workshop> GetWorkshopWorkload(long workShopId);
+        Task<Workshop> CreateWorkshop(Workshop workshop);
+        Task<Workshop> GetWorkshop(long workShopId);
     }
 }

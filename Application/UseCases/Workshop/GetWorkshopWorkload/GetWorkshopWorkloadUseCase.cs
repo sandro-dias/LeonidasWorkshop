@@ -19,7 +19,7 @@ namespace Application.UseCases.GetWorkshopWorkload
         public async Task<int> ExecuteAsync(int workshopId)
         {
             //TODO: criar output para voltar os próximos 5 dias úteis
-            var result = await _workshopRepository.GetWorkshopWorkload(workshopId);
+            var result = await _workshopRepository.GetWorkshop(workshopId);
             return result.Workload;
         }
     }
