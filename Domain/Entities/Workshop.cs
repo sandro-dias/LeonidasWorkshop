@@ -4,6 +4,8 @@ namespace Domain.Entities
 {
     public class Workshop
     {
+        public Workshop() { }
+
         public Workshop(long workShopId, int workload, DateTime date, int availableWorkload)
         {
             WorkShopId = workShopId;
@@ -12,12 +14,15 @@ namespace Domain.Entities
             AvailableWorkload = availableWorkload;
         }
 
-        public Workshop(string workShopName, int workload)
+        public static Workshop CreateWorkshop(string workShopName, int workload)
         {
-            WorkShopName = workShopName;
-            Workload = workload;
-            Date = DateTime.Now;
-            AvailableWorkload = workload;
+            return new Workshop()
+            {
+                WorkShopName = workShopName,
+                Workload = workload,
+                Date = DateTime.Now,
+                AvailableWorkload = workload
+            };
         }
 
         public long WorkShopId { get; private set; }

@@ -39,7 +39,7 @@ namespace Api.Controllers.PostWorkshop
             }
             catch (Exception ex)
             {
-                _logger.LogError("Não foi adicionar a oficina no banco de dados. A seguinte messagem foi retornada: {Message}", ex.Message);
+                _logger.LogError("[{ClassName}] It was not possible to post the workshop. The message returned was: {@Message}", nameof(WorkshopController), ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir oficina no banco de dados.");
             }
         }
@@ -58,8 +58,8 @@ namespace Api.Controllers.PostWorkshop
             }
             catch (Exception ex)
             {
-                _logger.LogError("Não foi adicionar a oficina no banco de dados. A seguinte messagem foi retornada: {Message}", ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir oficina no banco de dados.");
+                _logger.LogError("[{ClassName}] It was not possible to get the workshop. The message returned was: {@Message}", nameof(WorkshopController), ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao buscar a oficina no banco de dados.");
             }
         }
     }

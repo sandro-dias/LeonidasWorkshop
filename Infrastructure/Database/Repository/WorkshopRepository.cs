@@ -16,7 +16,7 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Workshop> GetWorkshopWorkload(long workshopId)
         {
-            //TODO entender como ficar input e retorno das entidades de dominio/infra
+            //TODO entender como fica o input e retorno das entidades de dominio/infra
             var workshop = await _context.Workshop.FindAsync(workshopId);
             return workshop;
         }

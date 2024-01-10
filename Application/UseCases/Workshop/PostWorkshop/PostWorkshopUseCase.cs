@@ -25,13 +25,12 @@ namespace Application.UseCases.PostWorkshop
             var validationResult = _validator.Validate(input);
             if (!validationResult.IsValid)
             {
-                _logger.LogError("A validação do input retornou falha com o seguinte erro: {Errors}", validationResult.Errors);
+                _logger.LogError("[{ClassName}] The input returned an error: {Errors}", nameof(PostWorkshopUseCase), validationResult.Errors);
                 return null;
             }
 
-            var workshop = new Workshop(input.WorkshopName, input.Workload);
-            var addedWorkshop = await _workshopRepository.InsertWorkshop(workshop);
-            return addedWorkshop;
+            var workshop = Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
+            return await _workshopRepository.InsertWorkshop(workshop);
         }
     }
 }

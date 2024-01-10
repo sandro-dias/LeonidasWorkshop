@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Database
+﻿namespace Infrastructure.Database
 {
-    class UnitOfWork
+    public interface UnitOfWork
     {
+        //TODO: refatorar para usar um UnitOfWork nos repositórios
     }
 }
