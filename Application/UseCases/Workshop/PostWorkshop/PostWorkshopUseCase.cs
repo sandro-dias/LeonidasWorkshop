@@ -3,7 +3,6 @@ using Application.UseCases.PostWorkshop.Input;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Domain.Entities;
 
 namespace Application.UseCases.PostWorkshop
 {
@@ -20,7 +19,7 @@ namespace Application.UseCases.PostWorkshop
             _logger = logger;
         }
 
-        public async Task<Workshop> ExecuteAsync(PostWorkshopInput input)
+        public async Task<Domain.Entities.Workshop> ExecuteAsync(PostWorkshopInput input)
         {
             var validationResult = _validator.Validate(input);
             if (!validationResult.IsValid)
@@ -29,7 +28,7 @@ namespace Application.UseCases.PostWorkshop
                 return null;
             }
 
-            var workshop = Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
+            var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
             return await _workshopRepository.InsertWorkshop(workshop);
         }
     }

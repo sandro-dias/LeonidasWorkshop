@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
-    public class Workshop
+    public class Workshop : Entity
     {
         public Workshop() { }
 

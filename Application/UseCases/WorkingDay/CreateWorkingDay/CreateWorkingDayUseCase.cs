@@ -1,4 +1,4 @@
-﻿using Application.Database.Repository;
+﻿using Application.Data;
 using Application.UseCases.Workshop.CreateWorkingDay.Input;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
@@ -8,22 +8,22 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
 {
     public class CreateWorkingDayUseCase : ICreateWorkingDayUseCase
     {
-        private readonly IWorkshopRepository _workshopRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateWorkingDayUseCase> _logger;
 
         public async Task ExecuteAsync(CreateWorkingDayInput input)
         {
-            var workshop = await _workshopRepository.GetWorkshop(input.WorkshopId);
+            var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
             if (workshop is null)
             {
-                _logger.LogError("");
+                _logger.LogError("{ClassName} The workshop is does not exist on database.", nameof(CreateWorkingDayUseCase));
                 return;
             }
 
             var newWorkingDay = WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
             if (newWorkingDay.IsWeekendDay() || newWorkingDay.IsWorkingDayWithinFiveBusinessDays())
             {
-                _logger.LogError("");
+                _logger.LogError("{ClassName} The working day is not valid.", nameof(CreateWorkingDayUseCase));
                 return;
             }
 
