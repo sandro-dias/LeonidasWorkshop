@@ -1,4 +1,4 @@
-﻿using Application.Data.Repository;
+﻿using Application.Data;
 using Application.UseCases.PostWorkshop.Input;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -9,13 +9,13 @@ namespace Application.UseCases.PostWorkshop
     public class PostWorkshopUseCase : IPostWorkshopUseCase
     {
         private readonly IValidator<PostWorkshopInput> _validator;
-        private readonly IWorkshopRepository _workshopRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<PostWorkshopUseCase> _logger;
 
-        public PostWorkshopUseCase(IValidator<PostWorkshopInput> validator, IWorkshopRepository productRepository, ILogger<PostWorkshopUseCase> logger)
+        public PostWorkshopUseCase(IValidator<PostWorkshopInput> validator, IUnitOfWork unitOfWork, ILogger<PostWorkshopUseCase> logger)
         {
             _validator = validator;
-            _workshopRepository = productRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -29,8 +29,8 @@ namespace Application.UseCases.PostWorkshop
             }
 
             var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
-            return new Domain.Entities.Workshop();
-            //return await _workshopRepository.InsertWorkshop(workshop);
+            await _unitOfWork.WorkshopRepository.AddAsync(workshop);
+            return workshop;
         }
     }
 }

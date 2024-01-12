@@ -36,8 +36,8 @@ namespace Api.Controllers.WorkingDay
             }
             catch (Exception ex)
             {
-                _logger.LogError("[{ClassName}] It was not possible to post the workshop. The message returned was: {@Message}", nameof(WorkingDayController), ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir oficina no banco de dados.");
+                _logger.LogError("[{ClassName}] It was not possible to post the working day. The message returned was: {@Message}", nameof(WorkingDayController), ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir dia de trabalho no banco de dados.");
             }
         }
     }
