@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Configurations
             builder.ToTable("WORKSHOP");
 
             builder.HasKey(x => x.WorkShopId);
-            builder.Property(x => x.WorkShopId).HasColumnName().Has
+            builder.Property(x => x.WorkShopId).HasColumnName("OFICINA_ID");
         }
     }
 }

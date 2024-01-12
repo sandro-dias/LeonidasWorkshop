@@ -28,8 +28,7 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
             }
 
             newWorkingDay.IsThursdayOrFriday();
-
-            //TODO: criar camada de infra para salvar na tabela de Dias de trabalho
+            await _unitOfWork.WorkingDayRepository.AddAsync(newWorkingDay);
         }
     }
 }

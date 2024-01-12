@@ -1,12 +1,9 @@
 ﻿using Application.Data.Repository;
 using Ardalis.Specification;
-using Ardalis.Specification.;
 using Domain.Entities;
 using Infrastructure.Database.Context;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,8 +27,9 @@ namespace Infrastructure.Data.Repository
 
         public Task<T> FirstOrDefaultAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
         {
-            var specificationResult = ApplySpecification(spec);
-            return specificationResult.FirstOrDefaultAsync(cancellationToken);
+            throw new NotImplementedException();
+            //var specificationResult = ApplySpecification(spec);
+            //return specificationResult.FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -55,9 +53,10 @@ namespace Infrastructure.Data.Repository
             throw new NotImplementedException();
         }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
-            return SpecificationEvaluator.Default.Evaluate(DbContext.Set<T>().AsQueryable(), spec);
-        }
+        //private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        //{
+        //    //TODO: entender como buscar com spec no banco
+        //    return InMemorySpecificationEvaluator.Default.Evaluate(DbContext.Set<T>().AsQueryable(), spec);
+        //}
     }
 }

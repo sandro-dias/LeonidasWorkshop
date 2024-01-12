@@ -1,4 +1,4 @@
-﻿using Application.Database.Repository;
+﻿using Application.Data.Repository;
 using Application.UseCases.PostWorkshop.Input;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -29,7 +29,8 @@ namespace Application.UseCases.PostWorkshop
             }
 
             var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
-            return await _workshopRepository.InsertWorkshop(workshop);
+            return new Domain.Entities.Workshop();
+            //return await _workshopRepository.InsertWorkshop(workshop);
         }
     }
 }

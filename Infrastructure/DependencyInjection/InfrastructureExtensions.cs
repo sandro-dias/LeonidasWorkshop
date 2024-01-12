@@ -1,10 +1,8 @@
 ﻿using Application.Data;
 using Application.Data.Repository;
-using Application.Database.Repository;
 using Infrastructure.Data.Repository;
 using Infrastructure.Database;
 using Infrastructure.Database.Context;
-using Infrastructure.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,11 +35,10 @@ namespace Infrastructure.DependencyInjection
 
         private static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration)
         {
-            //TODO: migrar projeto para o .NET 6.0
-            services.AddDbContextPool<WorkshopContext>(
+            services.AddDbContext<WorkshopContext>(
                 (builder) =>
                 {
-                    builder.UseSqlServer(configuration.GetConnectionString("WorkshopContext"), sqlServerOptions => sqlServerOptions.CommandTimeout(600));
+                    builder.UseSqlServer(configuration.GetConnectionString("WorkshopContext"));
                 });
 
             //services.AddDbContext<WorkshopContext>(x => x.UseInMemoryDatabase("Database"));

@@ -1,6 +1,8 @@
-﻿namespace Application.Data.Repository
+﻿using Domain.Entities;
+
+namespace Application.Data.Repository
 {
-    public interface IServiceRepository
+    public interface IServiceRepository : IAsyncRepository<Service>
     {
     }
 }
