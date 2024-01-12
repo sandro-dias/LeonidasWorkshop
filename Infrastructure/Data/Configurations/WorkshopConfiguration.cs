@@ -11,7 +11,8 @@ namespace Infrastructure.Data.Configurations
             builder.ToTable("WORKSHOP");
 
             builder.HasKey(x => x.WorkShopId);
-            builder.Property(x => x.WorkShopId).HasColumnName("OFICINA_ID");
+            builder.Property(x => x.WorkShopId).HasColumnName("OFICINA_ID").HasColumnType("INT").IsRequired();
+            //TODO: configurar Workshop e as demais entidades
         }
     }
 }

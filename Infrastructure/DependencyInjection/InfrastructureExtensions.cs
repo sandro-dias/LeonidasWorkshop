@@ -35,14 +35,15 @@ namespace Infrastructure.DependencyInjection
 
         private static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<WorkshopContext>(
-                (builder) =>
-                {
-                    builder.UseSqlServer(configuration.GetConnectionString("WorkshopContext"));
-                });
+            //TODO: remover comentário quando subir banco local para testes de aceite
+            //services.AddDbContext<WorkshopContext>(
+            //    (builder) =>
+            //    {
+            //        builder.UseSqlServer(configuration.GetConnectionString("WorkshopContext"));
+            //    });
 
-            //services.AddDbContext<WorkshopContext>(x => x.UseInMemoryDatabase("Database"));
-            //services.AddScoped<WorkshopContext, WorkshopContext>();
+            services.AddDbContext<WorkshopContext>(x => x.UseInMemoryDatabase("Database"));
+            services.AddScoped<WorkshopContext, WorkshopContext>();
             return services;
         }
     }
