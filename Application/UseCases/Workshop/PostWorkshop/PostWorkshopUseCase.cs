@@ -1,26 +1,25 @@
-﻿using Application.Database.Repository;
+﻿using Application.Data;
 using Application.UseCases.PostWorkshop.Input;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Domain.Entities;
 
 namespace Application.UseCases.PostWorkshop
 {
     public class PostWorkshopUseCase : IPostWorkshopUseCase
     {
         private readonly IValidator<PostWorkshopInput> _validator;
-        private readonly IWorkshopRepository _workshopRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<PostWorkshopUseCase> _logger;
 
-        public PostWorkshopUseCase(IValidator<PostWorkshopInput> validator, IWorkshopRepository productRepository, ILogger<PostWorkshopUseCase> logger)
+        public PostWorkshopUseCase(IValidator<PostWorkshopInput> validator, IUnitOfWork unitOfWork, ILogger<PostWorkshopUseCase> logger)
         {
             _validator = validator;
-            _workshopRepository = productRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
-        public async Task<Workshop> ExecuteAsync(PostWorkshopInput input)
+        public async Task<Domain.Entities.Workshop> ExecuteAsync(PostWorkshopInput input)
         {
             var validationResult = _validator.Validate(input);
             if (!validationResult.IsValid)
@@ -29,8 +28,9 @@ namespace Application.UseCases.PostWorkshop
                 return null;
             }
 
-            var workshop = Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
-            return await _workshopRepository.InsertWorkshop(workshop);
+            var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
+            await _unitOfWork.WorkshopRepository.AddAsync(workshop);
+            return workshop;
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.Specification" Version="5.2.0" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
@@ -15,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Specification\" />
     <Folder Include="UseCases\Customer\" />
     <Folder Include="UseCases\Service\" />
   </ItemGroup>

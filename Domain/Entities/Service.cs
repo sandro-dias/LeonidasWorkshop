@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public class Service
+    public class Service : Entity
     {
         public long ServiceId { get; private set; }
         public long ClientId { get; private set; }

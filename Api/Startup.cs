@@ -31,7 +31,7 @@ namespace Api
             services.AddControllers();
             services.AddRazorPages();
             services.AddApplication();
-            services.AddInfrastructure();
+            services.AddInfrastructure(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LeônidasWorkshop", Version = "v1", Description = "API controle de serviços da oficina do Leônidas" });
