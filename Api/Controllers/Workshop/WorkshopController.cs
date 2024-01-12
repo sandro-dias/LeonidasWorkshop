@@ -53,13 +53,13 @@ namespace Api.Controllers.PostWorkshop
         {
             try
             {
-                var workload = await _getWorkshopWorkload.ExecuteAsync(workShopId);
-                return Ok(workload);
+                var workloadList = await _getWorkshopWorkload.ExecuteAsync(workShopId);
+                return Ok(workloadList);
             }
             catch (Exception ex)
             {
-                _logger.LogError("[{ClassName}] It was not possible to get the workshop. The message returned was: {@Message}", nameof(WorkshopController), ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao buscar a oficina no banco de dados.");
+                _logger.LogError("[{ClassName}] It was not possible to get the workshop workload. The message returned was: {@Message}", nameof(WorkshopController), ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao buscar a carga disponível dos próximos dias da oficina no banco de dados.");
             }
         }
     }
