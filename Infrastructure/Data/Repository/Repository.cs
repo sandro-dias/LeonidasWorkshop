@@ -32,7 +32,7 @@ namespace Infrastructure.Data.Repository
             //return specificationResult.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public virtual async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public virtual async Task<T> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var keyValues = new object[] { id };
             return await DbContext.Set<T>().FindAsync(keyValues, cancellationToken);

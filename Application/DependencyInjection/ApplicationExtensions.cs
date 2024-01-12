@@ -1,8 +1,8 @@
-﻿using Application.UseCases.GetWorkshopWorkload;
-using Application.UseCases.PostWorkshop;
-using Application.UseCases.PostWorkshop.Input;
-using Application.UseCases.PostWorkshop.Validator;
-using Application.UseCases.Workshop.CreateWorkingDay;
+﻿using Application.UseCases.CreateWorkshop;
+using Application.UseCases.CreateWorkshop.Input;
+using Application.UseCases.CreateWorkshop.Validator;
+using Application.UseCases.GetWorkshopWorkload;
+using Application.UseCases.Service.CreateService;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,14 +19,14 @@ namespace Application.DependencyInjection
 
         internal static void AddUseCases(this IServiceCollection services)
         {
-            services.AddScoped<IPostWorkshopUseCase, PostWorkshopUseCase>();
+            services.AddScoped<ICreateWorkshopUseCase, CreateWorkshopUseCase>();
             services.AddScoped<IGetWorkshopWorkloadUseCase, GetWorkshopWorkloadUseCase>();
-            services.AddScoped<ICreateWorkingDayUseCase, CreateWorkingDayUseCase>();
+            services.AddScoped<ICreateServiceUseCase, CreateServiceUseCase>();
         }
 
         internal static void AddValidators(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<PostWorkshopInput>, PostWorkshopInputValidator>();
+            services.AddTransient<IValidator<CreateWorkshopInput>, CreateWorkshopInputValidator>();
         }
     }
 }

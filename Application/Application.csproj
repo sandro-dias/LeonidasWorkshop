@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Specification\" />
     <Folder Include="UseCases\Customer\" />
-    <Folder Include="UseCases\Service\" />
   </ItemGroup>
 
 </Project>

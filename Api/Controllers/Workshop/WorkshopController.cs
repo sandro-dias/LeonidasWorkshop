@@ -1,6 +1,6 @@
-﻿using Application.UseCases.GetWorkshopWorkload;
-using Application.UseCases.PostWorkshop;
-using Application.UseCases.PostWorkshop.Input;
+﻿using Application.UseCases.CreateWorkshop;
+using Application.UseCases.CreateWorkshop.Input;
+using Application.UseCases.GetWorkshopWorkload;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,10 +15,10 @@ namespace Api.Controllers.PostWorkshop
     public class WorkshopController : ControllerBase
     {
         private readonly ILogger<WorkshopController> _logger;
-        private readonly IPostWorkshopUseCase _postWorkshopUseCase;
+        private readonly ICreateWorkshopUseCase _postWorkshopUseCase;
         private readonly IGetWorkshopWorkloadUseCase _getWorkshopWorkload;
 
-        public WorkshopController(ILogger<WorkshopController> logger, IPostWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload)
+        public WorkshopController(ILogger<WorkshopController> logger, ICreateWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload)
         {
             _logger = logger;
             _postWorkshopUseCase = postWorkshopUseCase;
@@ -30,7 +30,7 @@ namespace Api.Controllers.PostWorkshop
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostWorkshop([FromBody, Required] PostWorkshopInput input)
+        public async Task<IActionResult> PostWorkshop([FromBody, Required] CreateWorkshopInput input)
         {
             try
             {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Application.UseCases.PostWorkshop.Input
+namespace Application.UseCases.CreateWorkshop.Input
 {
-    public class PostWorkshopInput
+    public class CreateWorkshopInput
     {
         public string WorkshopName { get; set; }
         public int Workload { get; set; }
