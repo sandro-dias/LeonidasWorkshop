@@ -11,24 +11,25 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateWorkingDayUseCase> _logger;
 
-        public async Task ExecuteAsync(CreateWorkingDayInput input)
+        public async Task<WorkingDay> ExecuteAsync(CreateWorkingDayInput input)
         {
             var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
             if (workshop is null)
             {
-                _logger.LogError("{ClassName} The workshop is does not exist on database.", nameof(CreateWorkingDayUseCase));
-                return;
+                _logger.LogError("{ClassName} The workshop does not exist on database.", nameof(CreateWorkingDayUseCase));
+                return null;
             }
 
             var newWorkingDay = WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
             if (newWorkingDay.IsWeekendDay() || newWorkingDay.IsWorkingDayWithinFiveBusinessDays())
             {
                 _logger.LogError("{ClassName} The working day is not valid.", nameof(CreateWorkingDayUseCase));
-                return;
+                return null;
             }
 
             newWorkingDay.IsThursdayOrFriday();
-            await _unitOfWork.WorkingDayRepository.AddAsync(newWorkingDay);
+            newWorkingDay = await _unitOfWork.WorkingDayRepository.AddAsync(newWorkingDay);
+            return newWorkingDay;
         }
     }
 }

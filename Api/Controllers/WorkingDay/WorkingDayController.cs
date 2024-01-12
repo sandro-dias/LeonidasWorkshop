@@ -31,8 +31,8 @@ namespace Api.Controllers.WorkingDay
         {
             try
             {
-                await _createWorkingDayUseCase.ExecuteAsync(input);
-                return Ok(input);
+                var result = await _createWorkingDayUseCase.ExecuteAsync(input);
+                return Ok(result);
             }
             catch (Exception ex)
             {

@@ -1,12 +1,12 @@
-﻿using Application.UseCases.PostWorkshop.Input;
+﻿using Application.UseCases.CreateWorkshop.Input;
 using FluentValidation;
 
-namespace Application.UseCases.PostWorkshop.Validator
+namespace Application.UseCases.CreateWorkshop.Validator
 {
-    public class PostWorkshopInputValidator : AbstractValidator<PostWorkshopInput>
+    public class CreateWorkshopInputValidator : AbstractValidator<CreateWorkshopInput>
     {
         private const int ZeroWorkload = 0;
-        public PostWorkshopInputValidator()
+        public CreateWorkshopInputValidator()
         {
             RuleFor(x => x.WorkshopName)
                 .NotEmpty()
