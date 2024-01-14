@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Application.UseCases.Workshop.GetWorkshopWorkload.Output;
+using System.Threading.Tasks;
 
 namespace Application.UseCases.GetWorkshopWorkload
 {
     public interface IGetWorkshopWorkloadUseCase
     {
-        Task<int> ExecuteAsync(int id);
+        Task<GetWorkshopWorkloadOutput> ExecuteAsync(int workshopId);
     }
 }

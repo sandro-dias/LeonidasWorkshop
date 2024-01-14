@@ -1,4 +1,7 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities
 {
     public class Workshop : Entity
     {
@@ -13,6 +16,7 @@
             };
         }
 
+        [Key]
         public long WorkShopId { get; private set; }
         public string WorkShopName { get; private set; }
         public int Workload { get; private set; }
