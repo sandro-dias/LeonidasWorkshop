@@ -13,6 +13,13 @@ namespace Application.UseCases.Service.CreateService
         private readonly ILogger<CreateServiceUseCase> _logger;
         private readonly ICreateWorkingDayUseCase _createWorkingDayUseCase;
 
+        public CreateServiceUseCase(IUnitOfWork unitOfWork, ILogger<CreateServiceUseCase> logger, ICreateWorkingDayUseCase createWorkingDayUseCase)
+        {
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _createWorkingDayUseCase = createWorkingDayUseCase;
+        }
+
         public async Task<Domain.Entities.Service> ExecuteAsync(CreateServiceInput input)
         {
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(input.CustomerId);
@@ -42,8 +49,13 @@ namespace Application.UseCases.Service.CreateService
             if (!IsAvailableWorkloadGreaterThanServiceWorkload(workingDay.AvailableWorkload, (int)input.Workload))
                 return null;
 
+            workingDay.UpdateAvailableWorkload((int)input.Workload);
             var service = Domain.Entities.Service.CreateService(input.CustomerId, input.WorkshopId, input.Date, input.Workload);
+
             service = await _unitOfWork.ServiceRepository.AddAsync(service);
+            await _unitOfWork.WorkingDayRepository.UpdateAsync(workingDay);
+            await _unitOfWork.CommitAsync();
+
             return service;
         }
 
