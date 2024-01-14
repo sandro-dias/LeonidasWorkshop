@@ -34,8 +34,8 @@ namespace Api.Controllers.PostWorkshop
         {
             try
             {
-                await _postWorkshopUseCase.ExecuteAsync(input);
-                return Ok(input);
+                var workshop = await _postWorkshopUseCase.ExecuteAsync(input);
+                return Ok(workshop);
             }
             catch (Exception ex)
             {

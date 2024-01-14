@@ -30,6 +30,7 @@ namespace Application.UseCases.CreateWorkshop
 
             var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
             workshop = await _unitOfWork.WorkshopRepository.AddAsync(workshop);
+            // await _unitOfWork.CommitAsync();
             return workshop;
         }
     }

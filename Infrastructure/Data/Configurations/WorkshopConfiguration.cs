@@ -8,11 +8,12 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Workshop> builder)
         {
-            builder.ToTable("WORKSHOP");
+            builder.ToTable("OFICINA");
 
             builder.HasKey(x => x.WorkShopId);
-            builder.Property(x => x.WorkShopId).HasColumnName("OFICINA_ID").HasColumnType("INT").IsRequired();
-            //TODO: configurar Workshop e as demais entidades
+            builder.Property(x => x.WorkShopId).HasColumnName("ID_OFICINA").HasColumnType("INT");
+            builder.Property(x => x.Workload).HasColumnName("CARGA").HasColumnType("INT");
+            builder.Property(x => x.WorkShopName).HasColumnName("NOME").HasColumnType("VARCHAR");
         }
     }
 }

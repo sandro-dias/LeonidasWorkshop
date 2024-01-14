@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -6,6 +7,7 @@ namespace Domain.Entities
     {
         public Service() { }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ServiceId { get; private set; }
         public long CustomerId { get; private set; }
         public long WorkshopId { get; private set; }

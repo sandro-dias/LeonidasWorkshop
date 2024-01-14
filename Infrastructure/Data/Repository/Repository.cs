@@ -1,9 +1,11 @@
 ﻿using Application.Data.Repository;
 using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure.Database.Context;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,19 +19,20 @@ namespace Infrastructure.Data.Repository
         {
             DbContext = dbContext;
         }
+
         public Repository() { }
 
         public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             await DbContext.Set<T>().AddAsync(entity, cancellationToken);
+            DbContext.SaveChanges();
             return entity;
         }
 
-        public Task<T> FirstOrDefaultAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
+        public async Task<T> FirstOrDefaultAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-            //var specificationResult = ApplySpecification(spec);
-            //return specificationResult.FirstOrDefaultAsync(cancellationToken);
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<T> GetByIdAsync(long id, CancellationToken cancellationToken = default)
@@ -38,25 +41,21 @@ namespace Infrastructure.Data.Repository
             return await DbContext.Set<T>().FindAsync(keyValues, cancellationToken);
         }
 
-        public Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var specificationResult = ApplySpecification(spec);
+            return await specificationResult.ToListAsync(cancellationToken);
         }
 
-        public Task SaveChangesAsync()
+        public Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            DbContext.Entry(entity).State = EntityState.Modified;
+            return Task.CompletedTask;
         }
 
-        public Task UpdateAsync(T enitty, CancellationToken cancellationToken = default)
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            throw new NotImplementedException();
+            return SpecificationEvaluator.Default.GetQuery(DbContext.Set<T>().AsQueryable(), spec);
         }
-
-        //private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        //{
-        //    //TODO: entender como buscar com spec no banco
-        //    return InMemorySpecificationEvaluator.Default.Evaluate(DbContext.Set<T>().AsQueryable(), spec);
-        //}
     }
 }

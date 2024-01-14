@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -9,6 +10,7 @@ namespace Domain.Entities
 
         public WorkingDay() { }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long WorkingDayId { get; private set; }
         public long WorkshopId { get; private set; }
         public DateTime Date { get; private set; }
@@ -33,13 +35,13 @@ namespace Domain.Entities
         {
             var today = DateTime.Today;
             if (Date.Date <= today)
-                return false;
+                return true;
 
             var businessDays = GetBusinessDays(today, Date.Date);
             if (businessDays <= BusinessDaysRange)
-                return true;
+                return false;
 
-            return false;
+            return true;
         }
 
         public static double GetBusinessDays(DateTime startD, DateTime endD)
@@ -57,7 +59,7 @@ namespace Domain.Entities
         public void IsThursdayOrFriday()
         {
             if (Date.DayOfWeek == DayOfWeek.Thursday || Date.DayOfWeek == DayOfWeek.Friday)
-                AvailableWorkload += (int)EndOfTheWeekSpreadOverload * AvailableWorkload;
+                AvailableWorkload += (int)(EndOfTheWeekSpreadOverload * AvailableWorkload);
         }
 
         public int UpdateAvailableWorkload(int serviceWorkload)

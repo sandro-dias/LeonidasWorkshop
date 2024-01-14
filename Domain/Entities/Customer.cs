@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities
 {
     public class Customer : Entity
     {
@@ -7,6 +9,7 @@
             Name = name;
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long CustomerId { get; private set; }
         public string Name { get; private set; }
     }

@@ -11,8 +11,16 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateWorkingDayUseCase> _logger;
 
+        public CreateWorkingDayUseCase(IUnitOfWork unitOfWork, ILogger<CreateWorkingDayUseCase> logger)
+        {
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+        }
+
         public async Task<WorkingDay> ExecuteAsync(CreateWorkingDayInput input)
         {
+            //TODO: melhorar retorno de erros para a controller
+            //TODO: validar se o dia de trabalho já se existe antes de adicionar
             var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
             if (workshop is null)
             {

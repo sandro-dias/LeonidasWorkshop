@@ -24,17 +24,22 @@ namespace Application.UseCases.GetWorkshopWorkload
 
         private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(long workshopId)
         {
+            //TODO: colocar uma validação se a oficina existe!!
             //TODO: validar comportamento caso WorkingDay não exista no banco
-            var today = DateTime.Today;
+
+            var today = DateTime.Now;
             var output = new GetWorkshopWorkloadOutput();
             for (var count = 1; count <= 5; count++)
             {
-                if (today.DayOfWeek != DayOfWeek.Saturday)
-                    today.AddDays(2);
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                    today = today.AddDays(2);
+
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                    today = today.AddDays(1);
 
                 var workingDay = await unitOfWork.WorkingDayRepository.FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(workshopId, today));
                 output.WorkingDayList.Add(workingDay);
-                today.AddDays(1);
+                today = today.AddDays(1);
             }
 
             return output;
