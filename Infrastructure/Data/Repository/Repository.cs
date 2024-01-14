@@ -25,7 +25,6 @@ namespace Infrastructure.Data.Repository
         public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             await DbContext.Set<T>().AddAsync(entity, cancellationToken);
-            DbContext.SaveChanges();
             return entity;
         }
 
