@@ -11,8 +11,9 @@ namespace Infrastructure.Data.Configurations
             builder.ToTable("CLIENTE");
 
             builder.HasKey(x => x.CustomerId);
-            builder.Property(x => x.CustomerId).HasColumnName("OFICINA_ID").HasColumnType("INT");
+            builder.Property(x => x.CustomerId).HasColumnName("ID_CLIENTE").HasColumnType("INT");
             builder.Property(x => x.Name).HasColumnName("NOME").HasColumnType("VARCHAR");
+            builder.Property(x => x.CPF).HasColumnName("CPF").HasColumnType("VARCHAR");
         }
     }
 }

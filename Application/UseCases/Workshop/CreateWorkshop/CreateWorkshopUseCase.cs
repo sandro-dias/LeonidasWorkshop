@@ -1,4 +1,5 @@
 ﻿using Application.Data;
+using Application.Data.Specification;
 using Application.UseCases.CreateWorkshop.Input;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,14 @@ namespace Application.UseCases.CreateWorkshop
                 return null;
             }
 
-            var workshop = Domain.Entities.Workshop.CreateWorkshop(input.WorkshopName, input.Workload);
+            var workshop = await _unitOfWork.WorkshopRepository.FirstOrDefaultAsync(new GetWorkshopByNameSpecification(input.Name));
+            if (workshop != null)
+            {
+                _logger.LogWarning("[{ClassName}] The workshop already exists on database", nameof(CreateWorkshopUseCase));
+                return workshop;
+            }
+
+            workshop = Domain.Entities.Workshop.CreateWorkshop(input.Name, input.Workload);
             workshop = await _unitOfWork.WorkshopRepository.AddAsync(workshop);
             await _unitOfWork.CommitAsync();
             return workshop;

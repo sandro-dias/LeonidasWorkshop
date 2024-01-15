@@ -1,4 +1,5 @@
 ﻿using Application.Data;
+using Application.Data.Specification;
 using Application.UseCases.Workshop.CreateWorkingDay.Input;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
@@ -19,8 +20,6 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
 
         public async Task<WorkingDay> ExecuteAsync(CreateWorkingDayInput input)
         {
-            //TODO: melhorar retorno de erros para a controller
-            //TODO: validar se o dia de trabalho já se existe antes de adicionar
             var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
             if (workshop is null)
             {
@@ -28,16 +27,24 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
                 return null;
             }
 
-            var newWorkingDay = WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
-            if (newWorkingDay.IsWeekendDay() || newWorkingDay.IsWorkingDayWithinFiveBusinessDays())
+            var workingDay = await _unitOfWork.WorkingDayRepository
+                                        .FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(input.WorkshopId, input.Date));
+            if (workingDay is not null)
+            {
+                _logger.LogWarning("{ClassName} The working day already exists.", nameof(CreateWorkingDayUseCase));
+                return workingDay;
+            }
+
+            workingDay = WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
+            if (workingDay.IsWeekendDay() || workingDay.IsWorkingDayWithinFiveBusinessDays())
             {
                 _logger.LogError("{ClassName} The working day is not valid.", nameof(CreateWorkingDayUseCase));
                 return null;
             }
 
-            newWorkingDay.IsThursdayOrFriday();
-            newWorkingDay = await _unitOfWork.WorkingDayRepository.AddAsync(newWorkingDay);
-            return newWorkingDay;
+            workingDay.IsThursdayOrFriday();
+            workingDay = await _unitOfWork.WorkingDayRepository.AddAsync(workingDay);
+            return workingDay;
         }
     }
 }

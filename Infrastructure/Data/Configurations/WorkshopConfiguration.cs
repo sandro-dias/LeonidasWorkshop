@@ -13,7 +13,7 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(x => x.WorkShopId);
             builder.Property(x => x.WorkShopId).HasColumnName("ID_OFICINA").HasColumnType("INT");
             builder.Property(x => x.Workload).HasColumnName("CARGA").HasColumnType("INT");
-            builder.Property(x => x.WorkShopName).HasColumnName("NOME").HasColumnType("VARCHAR");
+            builder.Property(x => x.Name).HasColumnName("NOME").HasColumnType("VARCHAR");
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Application.UseCases.CreateWorkshop;
 using Application.UseCases.CreateWorkshop.Input;
 using Application.UseCases.CreateWorkshop.Validator;
+using Application.UseCases.Customer.CreateCustomer;
+using Application.UseCases.Customer.CreateCustomer.Input;
+using Application.UseCases.Customer.CreateCustomer.Validator;
 using Application.UseCases.GetWorkshopWorkload;
 using Application.UseCases.Service.CreateService;
 using Application.UseCases.Workshop.CreateWorkingDay;
@@ -24,11 +27,13 @@ namespace Application.DependencyInjection
             services.AddScoped<IGetWorkshopWorkloadUseCase, GetWorkshopWorkloadUseCase>();
             services.AddScoped<ICreateServiceUseCase, CreateServiceUseCase>();
             services.AddScoped<ICreateWorkingDayUseCase, CreateWorkingDayUseCase>();
+            services.AddScoped<ICreateCustomerUseCase, CreateCustomerUseCase>();
         }
 
         internal static void AddValidators(this IServiceCollection services)
         {
             services.AddTransient<IValidator<CreateWorkshopInput>, CreateWorkshopInputValidator>();
+            services.AddTransient<IValidator<CreateCustomerInput>, CreateCustomerInputValidator>();
         }
     }
 }
