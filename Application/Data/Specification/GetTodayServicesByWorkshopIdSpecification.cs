@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Application.Data.Specification
 {
-    internal class GetTodayServicesByWorkshopIdSpecification : Specification<Service>
+    public class GetTodayServicesByWorkshopIdSpecification : Specification<Service>
     {
         public GetTodayServicesByWorkshopIdSpecification(long workshopId, DateTime date)
         {
