@@ -1,7 +1,7 @@
 ﻿using Application.Data;
-using Application.Data.Specification;
 using Application.UseCases.Service.CreateService.Input;
 using Application.UseCases.Workshop.CreateWorkingDay;
+using Application.UseCases.Workshop.CreateWorkingDay.Input;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
@@ -25,24 +25,21 @@ namespace Application.UseCases.Service.CreateService
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(input.CustomerId);
             if (customer == null)
             {
-                _logger.LogError("");
+                _logger.LogError("{ClassName} The customer does not exist on database", nameof(CreateServiceUseCase));
                 return null;
             }
 
             var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
             if (workshop == null)
             {
-                _logger.LogError("");
+                _logger.LogError("{ClassName} The workshop does not exist on database", nameof(CreateServiceUseCase));
                 return null;
             }
 
-            var workingDay = await _unitOfWork.WorkingDayRepository
-                                        .FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(input.WorkshopId, input.Date));
-
-            workingDay ??= await _createWorkingDayUseCase.ExecuteAsync(new Workshop.CreateWorkingDay.Input.CreateWorkingDayInput(input.WorkshopId, input.Date));
+            var workingDay = await _createWorkingDayUseCase.ExecuteAsync(new CreateWorkingDayInput(input.WorkshopId, input.Date));
             if (workingDay is null)
             {
-                _logger.LogError("");
+                _logger.LogError("{ClassName} The service cannot be scheduled on this workingDay", nameof(CreateServiceUseCase));
                 return null;
             }
 

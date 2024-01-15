@@ -8,7 +8,7 @@ namespace Application.UseCases.CreateWorkshop.Validator
         private const int ZeroWorkload = 0;
         public CreateWorkshopInputValidator()
         {
-            RuleFor(x => x.WorkshopName)
+            RuleFor(x => x.Name)
                 .NotEmpty()
                 .NotNull();
 
