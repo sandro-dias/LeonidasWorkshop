@@ -5,6 +5,6 @@ namespace Application.UseCases.GetWorkshopWorkload
 {
     public interface IGetWorkshopWorkloadUseCase
     {
-        Task<GetWorkshopWorkloadOutput> ExecuteAsync(int workshopId);
+        Task<GetWorkshopWorkloadOutput> ExecuteAsync(long workshopId);
     }
 }

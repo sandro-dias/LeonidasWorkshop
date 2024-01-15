@@ -62,9 +62,14 @@ namespace Domain.Entities
                 AvailableWorkload += (int)(EndOfTheWeekSpreadOverload * AvailableWorkload);
         }
 
-        public int UpdateAvailableWorkload(int serviceWorkload)
+        public int LowerAvailableWorkload(int serviceWorkload)
         {
             return AvailableWorkload -= serviceWorkload;
+        }
+
+        public int IncreaseAvailableWorkload(int serviceWorkload)
+        {
+            return AvailableWorkload += serviceWorkload;
         }
     }
 }

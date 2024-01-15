@@ -6,6 +6,8 @@ using Application.UseCases.Customer.CreateCustomer.Input;
 using Application.UseCases.Customer.CreateCustomer.Validator;
 using Application.UseCases.GetWorkshopWorkload;
 using Application.UseCases.Service.CreateService;
+using Application.UseCases.Service.DeleteService;
+using Application.UseCases.Service.GetServices;
 using Application.UseCases.Workshop.CreateWorkingDay;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,8 @@ namespace Application.DependencyInjection
             services.AddScoped<ICreateServiceUseCase, CreateServiceUseCase>();
             services.AddScoped<ICreateWorkingDayUseCase, CreateWorkingDayUseCase>();
             services.AddScoped<ICreateCustomerUseCase, CreateCustomerUseCase>();
+            services.AddScoped<IGetServicesUseCase, GetServicesUseCase>();
+            services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
         }
 
         internal static void AddValidators(this IServiceCollection services)

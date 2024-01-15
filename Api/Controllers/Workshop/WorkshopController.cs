@@ -49,7 +49,7 @@ namespace Api.Controllers.PostWorkshop
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetWorkshopWorkload([FromRoute, Required] int workShopId)
+        public async Task<IActionResult> GetWorkshopWorkload([FromRoute, Required] long workShopId)
         {
             try
             {

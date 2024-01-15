@@ -9,7 +9,7 @@ namespace Application.UseCases.GetWorkshopWorkload
 {
     public class GetWorkshopWorkloadUseCase(IUnitOfWork unitOfWork, ILogger<GetWorkshopWorkloadUseCase> logger) : IGetWorkshopWorkloadUseCase
     {
-        public async Task<GetWorkshopWorkloadOutput> ExecuteAsync(int workshopId)
+        public async Task<GetWorkshopWorkloadOutput> ExecuteAsync(long workshopId)
         {   
             var workshop = await unitOfWork.WorkshopRepository.GetByIdAsync(workshopId);
             if (workshop is null)
@@ -24,7 +24,6 @@ namespace Application.UseCases.GetWorkshopWorkload
 
         private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(long workshopId)
         {
-            //TODO: colocar uma validação se a oficina existe!!
             //TODO: validar comportamento caso WorkingDay não exista no banco
 
             var today = DateTime.Now;
