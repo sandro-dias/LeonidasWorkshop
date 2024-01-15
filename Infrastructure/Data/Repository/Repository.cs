@@ -56,5 +56,11 @@ namespace Infrastructure.Data.Repository
         {
             return SpecificationEvaluator.Default.GetQuery(DbContext.Set<T>().AsQueryable(), spec);
         }
+
+        public Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        {
+            DbContext.Entry(entity).State = EntityState.Deleted;
+            return Task.CompletedTask;
+        }
     }
 }

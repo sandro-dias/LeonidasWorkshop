@@ -27,13 +27,9 @@ namespace Application.UseCases.Workshop.CreateWorkingDay
                 return null;
             }
 
-            var workingDay = await _unitOfWork.WorkingDayRepository
-                                        .FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(input.WorkshopId, input.Date));
+            var workingDay = await _unitOfWork.WorkingDayRepository.FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(input.WorkshopId, input.Date));
             if (workingDay is not null)
-            {
-                _logger.LogWarning("{ClassName} The working day already exists.", nameof(CreateWorkingDayUseCase));
                 return workingDay;
-            }
 
             workingDay = WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
             if (workingDay.IsWeekendDay() || workingDay.IsWorkingDayWithinFiveBusinessDays())

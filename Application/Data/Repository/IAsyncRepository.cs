@@ -13,5 +13,6 @@ namespace Application.Data.Repository
         Task<T> AddAsync (T entity, CancellationToken cancellationToken = default);
         Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
         Task<T> FirstOrDefaultAsync(ISpecification<T> spec, CancellationToken cancellationToken = default);
+        Task DeleteAsync (T entity, CancellationToken cancellationToken= default);
     }
 }

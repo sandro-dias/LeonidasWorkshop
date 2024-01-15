@@ -46,7 +46,7 @@ namespace Application.UseCases.Service.CreateService
             if (!IsAvailableWorkloadGreaterThanServiceWorkload(workingDay.AvailableWorkload, (int)input.Workload))
                 return null;
 
-            workingDay.UpdateAvailableWorkload((int)input.Workload);
+            workingDay.LowerAvailableWorkload((int)input.Workload);
             var service = Domain.Entities.Service.CreateService(input.CustomerId, input.WorkshopId, input.Date, input.Workload);
 
             service = await _unitOfWork.ServiceRepository.AddAsync(service);
