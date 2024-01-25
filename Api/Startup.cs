@@ -31,6 +31,7 @@ namespace Api
             services.AddControllers();
             services.AddRazorPages();
             services.AddApplication();
+            services.AddMemoryCache();
             services.AddInfrastructure(Configuration);
             services.AddSwaggerGen(c =>
             {

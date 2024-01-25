@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.UseCases.Service.GetServices
 {
@@ -13,11 +14,12 @@ namespace Application.UseCases.Service.GetServices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<GetServicesUseCase> _logger;
-
-        public GetServicesUseCase(IUnitOfWork unitOfWork, ILogger<GetServicesUseCase> logger)
+        private readonly IMemoryCache _memoryCache;
+        public GetServicesUseCase(IUnitOfWork unitOfWork, ILogger<GetServicesUseCase> logger, IMemoryCache memoryCache)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _memoryCache = memoryCache;
         }
 
         public async Task<IEnumerable<Domain.Entities.Service>> ExecuteAsync(long workshopId)
@@ -35,7 +37,15 @@ namespace Application.UseCases.Service.GetServices
                 return Enumerable.Empty<Domain.Entities.Service>();
             }
 
-            var services = await _unitOfWork.ServiceRepository.ListAsync(new GetTodayServicesByWorkshopIdSpecification(workshopId, today));
+            var tokenCacheKey = $"{workshop.Name}_{today:yy/MM/dd}";
+
+            if (!_memoryCache.TryGetValue(tokenCacheKey, out IReadOnlyList<Domain.Entities.Service> services))
+            {
+                services = await _unitOfWork.ServiceRepository.ListAsync(new GetTodayServicesByWorkshopIdSpecification(workshopId, today));
+                var expirationDate = DateTime.Now.ToLocalTime().Date.AddDays(1).AddSeconds(-1);
+                _memoryCache.Set(tokenCacheKey, services, new DateTimeOffset(expirationDate));
+            }
+
             return services;
         }
     }
