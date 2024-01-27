@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Application.UseCases.Workshop.CreateWorkingDay.Input
+namespace Application.Services.CreateWorkingDay.Input
 {
     [ExcludeFromCodeCoverage]
     public class CreateWorkingDayInput

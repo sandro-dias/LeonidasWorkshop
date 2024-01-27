@@ -37,8 +37,8 @@ namespace Application.UseCases.Service.GetServices
                 return Enumerable.Empty<Domain.Entities.Service>();
             }
 
+            //TODO validar em teste unitário e funcional
             var tokenCacheKey = $"{workshop.Name}_{today:yy/MM/dd}";
-
             if (!_memoryCache.TryGetValue(tokenCacheKey, out IReadOnlyList<Domain.Entities.Service> services))
             {
                 services = await _unitOfWork.ServiceRepository.ListAsync(new GetTodayServicesByWorkshopIdSpecification(workshopId, today));

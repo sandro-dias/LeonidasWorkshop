@@ -1,24 +1,17 @@
 ﻿using Application.Data;
+using Application.Services.CreateWorkingDay;
+using Application.Services.CreateWorkingDay.Input;
 using Application.UseCases.Service.CreateService.Input;
-using Application.UseCases.Workshop.CreateWorkingDay;
-using Application.UseCases.Workshop.CreateWorkingDay.Input;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace Application.UseCases.Service.CreateService
 {
-    public class CreateServiceUseCase : ICreateServiceUseCase
+    public class CreateServiceUseCase(IUnitOfWork unitOfWork, ILogger<CreateServiceUseCase> logger, ICreateWorkingDayService createWorkingDayUseCase) : ICreateServiceUseCase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<CreateServiceUseCase> _logger;
-        private readonly ICreateWorkingDayUseCase _createWorkingDayUseCase;
-
-        public CreateServiceUseCase(IUnitOfWork unitOfWork, ILogger<CreateServiceUseCase> logger, ICreateWorkingDayUseCase createWorkingDayUseCase)
-        {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
-            _createWorkingDayUseCase = createWorkingDayUseCase;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<CreateServiceUseCase> _logger = logger;
+        private readonly ICreateWorkingDayService _createWorkingDayUseCase = createWorkingDayUseCase;
 
         public async Task<Domain.Entities.Service> ExecuteAsync(CreateServiceInput input)
         {

@@ -14,7 +14,7 @@ namespace Application.UseCases.GetWorkshopWorkload
             var workshop = await unitOfWork.WorkshopRepository.GetByIdAsync(workshopId);
             if (workshop is null)
             {
-                logger.LogError("");
+                logger.LogError("[{ClassName}] The workshop does not exist on database, workshopId: {workshopId}", nameof(GetWorkshopWorkloadUseCase), workshopId);
                 return null;
             }
 
@@ -26,22 +26,33 @@ namespace Application.UseCases.GetWorkshopWorkload
         {
             //TODO: validar comportamento caso WorkingDay não exista no banco
 
-            var today = DateTime.Now;
-            var output = new GetWorkshopWorkloadOutput();
-            for (var count = 1; count <= 5; count++)
+            var initialDate = DateTime.Now;
+            var endDate = GetEndDate(initialDate);
+
+            var workingDayList = await unitOfWork.WorkingDayRepository.ListAsync(new GetWorkingDayByDateRangeSpecification(workshopId, initialDate, endDate));
+            var output = new GetWorkshopWorkloadOutput
             {
-                if (today.DayOfWeek == DayOfWeek.Saturday)
-                    today = today.AddDays(2);
-
-                if (today.DayOfWeek == DayOfWeek.Sunday)
-                    today = today.AddDays(1);
-
-                var workingDay = await unitOfWork.WorkingDayRepository.FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(workshopId, today));
-                output.WorkingDayList.Add(workingDay);
-                today = today.AddDays(1);
-            }
+                WorkingDayList = [.. workingDayList]
+            };
 
             return output;
+        }
+
+        public DateTime GetEndDate(DateTime initialDate)
+        {
+            var endDate = initialDate;
+            for (var count = 1; count <= 5; count++)
+            {
+                if (endDate.DayOfWeek == DayOfWeek.Saturday)
+                    endDate = endDate.AddDays(1);
+
+                if (endDate.DayOfWeek == DayOfWeek.Friday)
+                    endDate = endDate.AddDays(2);
+
+                endDate = endDate.AddDays(1);
+            }
+
+            return endDate;
         }
     }
 }
