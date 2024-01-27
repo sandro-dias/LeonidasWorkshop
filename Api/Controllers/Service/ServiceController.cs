@@ -2,6 +2,7 @@
 using Application.UseCases.Service.CreateService.Input;
 using Application.UseCases.Service.DeleteService;
 using Application.UseCases.Service.GetServices;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -33,10 +34,11 @@ namespace Api.Controllers.Service
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateService([Required][FromBody] CreateServiceInput input)
+        public async Task<IActionResult> CreateService([Required][FromBody] CreateServiceInput input, [Required][FromHeader] ServiceWorkload serviceWorkload)
         {
             try
             {
+                input.SetInputWorkload(serviceWorkload);
                 var result = await _createServiceUseCase.ExecuteAsync(input);
                 return Ok(result);
             }

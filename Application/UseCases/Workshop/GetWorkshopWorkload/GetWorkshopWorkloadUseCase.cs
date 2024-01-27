@@ -10,7 +10,7 @@ namespace Application.UseCases.GetWorkshopWorkload
     public class GetWorkshopWorkloadUseCase(IUnitOfWork unitOfWork, ILogger<GetWorkshopWorkloadUseCase> logger) : IGetWorkshopWorkloadUseCase
     {
         public async Task<GetWorkshopWorkloadOutput> ExecuteAsync(long workshopId)
-        {   
+        {
             var workshop = await unitOfWork.WorkshopRepository.GetByIdAsync(workshopId);
             if (workshop is null)
             {
@@ -18,18 +18,16 @@ namespace Application.UseCases.GetWorkshopWorkload
                 return null;
             }
 
-            var output = await GetWorkloadForTheNextFiveBusinessDays(workshopId);
+            var output = await GetWorkloadForTheNextFiveBusinessDays(workshop);
             return output;
         }
 
-        private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(long workshopId)
+        private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(Domain.Entities.Workshop workshop)
         {
-            //TODO: validar comportamento caso WorkingDay não exista no banco
-
             var initialDate = DateTime.Now;
             var endDate = GetEndDate(initialDate);
 
-            var workingDayList = await unitOfWork.WorkingDayRepository.ListAsync(new GetWorkingDayByDateRangeSpecification(workshopId, initialDate, endDate));
+            var workingDayList = await unitOfWork.WorkingDayRepository.ListAsync(new GetWorkingDayByDateRangeSpecification(workshop.WorkShopId, initialDate, endDate));
             var output = new GetWorkshopWorkloadOutput
             {
                 WorkingDayList = [.. workingDayList]

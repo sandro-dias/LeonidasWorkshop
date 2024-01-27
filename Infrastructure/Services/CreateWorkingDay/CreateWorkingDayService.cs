@@ -34,6 +34,7 @@ namespace Infrastructure.Services.CreateWorkingDay
 
             workingDay.IsThursdayOrFriday();
             workingDay = await _unitOfWork.WorkingDayRepository.AddAsync(workingDay);
+            await _unitOfWork.CommitAsync();
             return workingDay;
         }
     }

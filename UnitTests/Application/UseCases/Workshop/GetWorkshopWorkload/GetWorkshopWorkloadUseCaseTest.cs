@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.Application.UseCases.Workshop
+namespace UnitTests.Application.UseCases.Workshop.GetWorkshopWorkload
 {
     public class GetWorkshopWorkloadUseCaseTest
     {
