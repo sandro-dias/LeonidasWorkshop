@@ -3,11 +3,11 @@ using System;
 
 namespace Application.UseCases.Service.CreateService.Input
 {
-    public class CreateServiceInput
+    public class CreateServiceInput(long workshopId, long customerId, DateTime date, ServiceWorkload workload)
     {
-        public long WorkshopId { get; init; }
-        public long CustomerId { get; init; }
-        public DateTime Date { get; init; }
-        public ServiceWorkload Workload { get; init; }
+        public long WorkshopId { get; set; } = workshopId;
+        public long CustomerId { get; set; } = customerId;
+        public DateTime Date { get; set; } = date;
+        public ServiceWorkload Workload { get; set; } = workload;
     }
 }

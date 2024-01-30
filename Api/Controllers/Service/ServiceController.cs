@@ -2,6 +2,7 @@
 using Application.UseCases.Service.CreateService.Input;
 using Application.UseCases.Service.DeleteService;
 using Application.UseCases.Service.GetServices;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,30 +14,23 @@ namespace Api.Controllers.Service
 {
     [ApiController]
     [Route("v1")]
-    public class ServiceController : ControllerBase
+    public class ServiceController(ILogger<ServiceController> logger, ICreateServiceUseCase createServiceUseCase, IGetServicesUseCase getServicesUseCase, IDeleteServiceUseCase deleteServiceUseCase) : ControllerBase
     {
-        private readonly ILogger<ServiceController> _logger;
-        private readonly ICreateServiceUseCase _createServiceUseCase;
-        private readonly IGetServicesUseCase _getServicesUseCase;
-        private readonly IDeleteServiceUseCase _deleteServiceUseCase;
-
-        public ServiceController(ILogger<ServiceController> logger, ICreateServiceUseCase createServiceUseCase, IGetServicesUseCase getServicesUseCase, IDeleteServiceUseCase deleteServiceUseCase)
-        {
-            _logger = logger;
-            _createServiceUseCase = createServiceUseCase;
-            _getServicesUseCase = getServicesUseCase;
-            _deleteServiceUseCase = deleteServiceUseCase;
-        }
+        private readonly ILogger<ServiceController> _logger = logger;
+        private readonly ICreateServiceUseCase _createServiceUseCase = createServiceUseCase;
+        private readonly IGetServicesUseCase _getServicesUseCase = getServicesUseCase;
+        private readonly IDeleteServiceUseCase _deleteServiceUseCase = deleteServiceUseCase;
 
         [HttpPost]
-        [Route("api/create-service")]
+        [Route("api/create-service/{workShopId}/{customerId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateService([Required][FromBody] CreateServiceInput input)
+        public async Task<IActionResult> CreateService([FromRoute, Required] long workShopId, [FromRoute, Required] long customerId, [FromQuery, Required] DateTime date, [FromHeader, Required] ServiceWorkload serviceWorkload)
         {
             try
             {
+                var input = new CreateServiceInput(workShopId, customerId, date, serviceWorkload);
                 var result = await _createServiceUseCase.ExecuteAsync(input);
                 return Ok(result);
             }

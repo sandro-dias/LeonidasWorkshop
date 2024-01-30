@@ -7,18 +7,11 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Customer.CreateCustomer
 {
-    public class CreateCustomerUseCase : ICreateCustomerUseCase
+    public class CreateCustomerUseCase(IValidator<CreateCustomerInput> validator, IUnitOfWork unitOfWork, ILogger<CreateCustomerUseCase> logger) : ICreateCustomerUseCase
     {
-        private readonly IValidator<CreateCustomerInput> _validator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<CreateCustomerUseCase> _logger;
-
-        public CreateCustomerUseCase(IValidator<CreateCustomerInput> validator, IUnitOfWork unitOfWork, ILogger<CreateCustomerUseCase> logger)
-        {
-            _validator = validator;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
-        }
+        private readonly IValidator<CreateCustomerInput> _validator = validator;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<CreateCustomerUseCase> _logger = logger;
 
         public async Task<Domain.Entities.Customer> ExecuteAsync(CreateCustomerInput input)
         {
@@ -26,7 +19,7 @@ namespace Application.UseCases.Customer.CreateCustomer
             if (!validationResult.IsValid)
             {
                 _logger.LogError("[{ClassName}] The input returned an error: {Errors}", nameof(CreateCustomerUseCase), validationResult.Errors);
-                return null;
+                return default;
             }
 
             var customer = await _unitOfWork.CustomerRepository.FirstOrDefaultAsync(new GetCustomerByCPFSpecification(input.CPF));

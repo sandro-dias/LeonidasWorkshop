@@ -12,18 +12,11 @@ namespace Api.Controllers.PostWorkshop
 {
     [ApiController]
     [Route("v1")]
-    public class WorkshopController : ControllerBase
+    public class WorkshopController(ILogger<WorkshopController> logger, ICreateWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload) : ControllerBase
     {
-        private readonly ILogger<WorkshopController> _logger;
-        private readonly ICreateWorkshopUseCase _postWorkshopUseCase;
-        private readonly IGetWorkshopWorkloadUseCase _getWorkshopWorkload;
-
-        public WorkshopController(ILogger<WorkshopController> logger, ICreateWorkshopUseCase postWorkshopUseCase, IGetWorkshopWorkloadUseCase getWorkshopWorkload)
-        {
-            _logger = logger;
-            _postWorkshopUseCase = postWorkshopUseCase;
-            _getWorkshopWorkload = getWorkshopWorkload;
-        }
+        private readonly ILogger<WorkshopController> _logger = logger;
+        private readonly ICreateWorkshopUseCase _postWorkshopUseCase = postWorkshopUseCase;
+        private readonly IGetWorkshopWorkloadUseCase _getWorkshopWorkload = getWorkshopWorkload;
 
         [HttpPost]
         [Route("api/create-workshop/")]

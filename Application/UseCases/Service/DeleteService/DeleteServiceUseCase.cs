@@ -5,16 +5,10 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Service.DeleteService
 {
-    public class DeleteServiceUseCase : IDeleteServiceUseCase
+    public class DeleteServiceUseCase(IUnitOfWork unitOfWork, ILogger<DeleteServiceUseCase> logger) : IDeleteServiceUseCase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<DeleteServiceUseCase> _logger;
-
-        public DeleteServiceUseCase(IUnitOfWork unitOfWork, ILogger<DeleteServiceUseCase> logger)
-        {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<DeleteServiceUseCase> _logger = logger;
 
         public async Task ExecuteAsync(long serviceId)
         {

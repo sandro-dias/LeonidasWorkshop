@@ -10,38 +10,47 @@ namespace Application.UseCases.GetWorkshopWorkload
     public class GetWorkshopWorkloadUseCase(IUnitOfWork unitOfWork, ILogger<GetWorkshopWorkloadUseCase> logger) : IGetWorkshopWorkloadUseCase
     {
         public async Task<GetWorkshopWorkloadOutput> ExecuteAsync(long workshopId)
-        {   
+        {
             var workshop = await unitOfWork.WorkshopRepository.GetByIdAsync(workshopId);
             if (workshop is null)
             {
-                logger.LogError("");
-                return null;
+                logger.LogError("[{ClassName}] The workshop does not exist on database, workshopId: {workshopId}", nameof(GetWorkshopWorkloadUseCase), workshopId);
+                return default;
             }
 
-            var output = await GetWorkloadForTheNextFiveBusinessDays(workshopId);
+            var output = await GetWorkloadForTheNextFiveBusinessDays(workshop);
             return output;
         }
 
-        private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(long workshopId)
+        private async Task<GetWorkshopWorkloadOutput> GetWorkloadForTheNextFiveBusinessDays(Domain.Entities.Workshop workshop)
         {
-            //TODO: validar comportamento caso WorkingDay não exista no banco
+            var initialDate = DateTime.Now;
+            var endDate = GetEndDate(initialDate);
 
-            var today = DateTime.Now;
-            var output = new GetWorkshopWorkloadOutput();
-            for (var count = 1; count <= 5; count++)
+            var workingDayList = await unitOfWork.WorkingDayRepository.ListAsync(new GetWorkingDayByDateRangeSpecification(workshop.WorkShopId, initialDate, endDate));
+            var output = new GetWorkshopWorkloadOutput
             {
-                if (today.DayOfWeek == DayOfWeek.Saturday)
-                    today = today.AddDays(2);
-
-                if (today.DayOfWeek == DayOfWeek.Sunday)
-                    today = today.AddDays(1);
-
-                var workingDay = await unitOfWork.WorkingDayRepository.FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(workshopId, today));
-                output.WorkingDayList.Add(workingDay);
-                today = today.AddDays(1);
-            }
+                WorkingDayList = [.. workingDayList]
+            };
 
             return output;
+        }
+
+        public DateTime GetEndDate(DateTime initialDate)
+        {
+            var endDate = initialDate;
+            for (var count = 1; count <= 5; count++)
+            {
+                if (endDate.DayOfWeek == DayOfWeek.Saturday)
+                    endDate = endDate.AddDays(1);
+
+                if (endDate.DayOfWeek == DayOfWeek.Friday)
+                    endDate = endDate.AddDays(2);
+
+                endDate = endDate.AddDays(1);
+            }
+
+            return endDate;
         }
     }
 }

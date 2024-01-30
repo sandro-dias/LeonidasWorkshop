@@ -1,8 +1,10 @@
 ﻿using Application.Data;
 using Application.Data.Repository;
+using Application.Services.CreateWorkingDay;
 using Infrastructure.Data.Repository;
 using Infrastructure.Database;
 using Infrastructure.Database.Context;
+using Infrastructure.Services.CreateWorkingDay;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +15,16 @@ namespace Infrastructure.DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddServices();
             services.AddDataBase(configuration);
             services.AddUnitOfWork();
             services.AddRepositories();
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICreateWorkingDayService, CreateWorkingDayService>();
             return services;
         }
 
