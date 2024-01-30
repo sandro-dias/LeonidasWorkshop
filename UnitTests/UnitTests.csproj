@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="Api\**" />
-    <Compile Remove="Infrastructure\**" />
     <EmbeddedResource Remove="Api\**" />
-    <EmbeddedResource Remove="Infrastructure\**" />
     <None Remove="Api\**" />
-    <None Remove="Infrastructure\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,10 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\UseCases\Service\CreateService\" />
-    <Folder Include="Application\UseCases\Service\DeleteService\" />
-    <Folder Include="Application\UseCases\Service\GetServices\" />
-    <Folder Include="Application\UseCases\Workshop\CreateWorkshop\" />
+    <Folder Include="Infrastructure\Services\CreateWorkingDay\" />
   </ItemGroup>
 
   <ItemGroup>

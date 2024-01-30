@@ -15,7 +15,7 @@ namespace Application.UseCases.GetWorkshopWorkload
             if (workshop is null)
             {
                 logger.LogError("[{ClassName}] The workshop does not exist on database, workshopId: {workshopId}", nameof(GetWorkshopWorkloadUseCase), workshopId);
-                return null;
+                return default;
             }
 
             var output = await GetWorkloadForTheNextFiveBusinessDays(workshop);

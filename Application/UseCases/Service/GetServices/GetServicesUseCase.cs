@@ -31,9 +31,8 @@ namespace Application.UseCases.Service.GetServices
                 return Enumerable.Empty<Domain.Entities.Service>();
             }
 
-            //TODO validar em teste unitário e funcional
             var tokenCacheKey = $"{workshop.Name}_SERVICES_{today:yy/MM/dd}";
-            if (!_memoryCache.TryGetValue(tokenCacheKey, out IReadOnlyList<Domain.Entities.Service> services))
+            if (!_memoryCache.TryGetValue(tokenCacheKey, out IEnumerable<Domain.Entities.Service> services))
             {
                 services = await _unitOfWork.ServiceRepository.ListAsync(new GetTodayServicesByWorkshopIdSpecification(workshopId, today));
                 var expirationDate = DateTime.Now.ToLocalTime().Date.AddDays(1).AddSeconds(-1);

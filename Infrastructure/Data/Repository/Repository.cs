@@ -40,7 +40,7 @@ namespace Infrastructure.Data.Repository
             return await DbContext.Set<T>().FindAsync(keyValues, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
         {
             var specificationResult = ApplySpecification(spec);
             return await specificationResult.ToListAsync(cancellationToken);

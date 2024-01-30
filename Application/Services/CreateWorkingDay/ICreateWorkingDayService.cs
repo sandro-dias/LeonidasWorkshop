@@ -5,6 +5,6 @@ namespace Application.Services.CreateWorkingDay
 {
     public interface ICreateWorkingDayService
     {
-        Task<Domain.Entities.WorkingDay> ExecuteAsync(CreateWorkingDayInput input);
+        Task<Domain.Entities.WorkingDay> CreateWorkingDay(CreateWorkingDayInput input);
     }
 }

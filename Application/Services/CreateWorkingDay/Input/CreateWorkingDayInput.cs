@@ -4,15 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace Application.Services.CreateWorkingDay.Input
 {
     [ExcludeFromCodeCoverage]
-    public class CreateWorkingDayInput
+    public class CreateWorkingDayInput(long workshopId, int workshopWorkload, DateTime date)
     {
-        public CreateWorkingDayInput(long workshopId, DateTime date)
-        {
-            WorkshopId = workshopId;
-            Date = date;
-        }
-
-        public long WorkshopId { get; init; }
-        public DateTime Date { get; init; }
+        public long WorkshopId { get; init; } = workshopId;
+        public int WorkshopWorkload { get; init; } = workshopWorkload;
+        public DateTime Date { get; init; } = date;
     }
 }

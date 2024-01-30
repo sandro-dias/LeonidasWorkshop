@@ -33,7 +33,7 @@ namespace UnitTests.Application.UseCases.Customer
         {
             //Arrange
             var fakeInput = _fixture.Create<CreateCustomerInput>();
-            var fakeValidationResult = new FluentValidation.Results.ValidationResult();
+            var fakeValidationResult = new ValidationResult();
             _validator.Setup(x => x.Validate(It.IsAny<CreateCustomerInput>())).Returns(fakeValidationResult);
             _unitOfWork.Setup(x => x.CustomerRepository.FirstOrDefaultAsync(It.IsAny<GetCustomerByCPFSpecification>(), It.IsAny<CancellationToken>()));
             _unitOfWork.Setup(x => x.CustomerRepository.AddAsync(It.IsAny<Domain.Entities.Customer>(), It.IsAny<CancellationToken>()));

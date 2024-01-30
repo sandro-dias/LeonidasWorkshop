@@ -12,20 +12,13 @@ namespace Infrastructure.Services.CreateWorkingDay
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<CreateWorkingDayService> _logger = logger;
 
-        public async Task<Domain.Entities.WorkingDay> ExecuteAsync(CreateWorkingDayInput input)
+        public async Task<Domain.Entities.WorkingDay> CreateWorkingDay(CreateWorkingDayInput input)
         {
-            var workshop = await _unitOfWork.WorkshopRepository.GetByIdAsync(input.WorkshopId);
-            if (workshop is null)
-            {
-                _logger.LogError("{ClassName} The workshop does not exist on database.", nameof(CreateWorkingDayService));
-                return null;
-            }
-
             var workingDay = await _unitOfWork.WorkingDayRepository.FirstOrDefaultAsync(new GetWorkingDayByWorkshopSpecification(input.WorkshopId, input.Date));
             if (workingDay is not null)
                 return workingDay;
 
-            workingDay = Domain.Entities.WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, workshop.Workload);
+            workingDay = Domain.Entities.WorkingDay.CreateWorkingDay(input.WorkshopId, input.Date, input.WorkshopWorkload);
             if (workingDay.IsWeekendDay() || workingDay.IsWorkingDayWithinFiveBusinessDays())
             {
                 _logger.LogError("{ClassName} The working day is not valid.", nameof(CreateWorkingDayService));

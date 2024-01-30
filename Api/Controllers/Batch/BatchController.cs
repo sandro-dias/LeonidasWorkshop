@@ -33,7 +33,7 @@ namespace Api.Controllers.Batch
         {
             try
             {
-                var result = await createWorkingDayService.ExecuteAsync(input);
+                var result = await createWorkingDayService.CreateWorkingDay(input);
                 return Ok(result);
             }
             catch (Exception ex)
