@@ -1,4 +1,5 @@
-﻿using Application.UseCases.CreateWorkshop;
+﻿using Application.Middlewares;
+using Application.UseCases.CreateWorkshop;
 using Application.UseCases.CreateWorkshop.Input;
 using Application.UseCases.CreateWorkshop.Validator;
 using Application.UseCases.Customer.CreateCustomer;
@@ -19,10 +20,16 @@ namespace Application.DependencyInjection
         {
             services.AddUseCases();
             services.AddValidators();
+            services.AddMiddlewares();
             return services;
         }
 
-        internal static void AddUseCases(this IServiceCollection services)
+        private static void AddMiddlewares(this IServiceCollection services)
+        {
+            services.AddScoped<AuthenticationMiddleware>();
+        }
+
+        private static void AddUseCases(this IServiceCollection services)
         {
             services.AddScoped<ICreateWorkshopUseCase, CreateWorkshopUseCase>();
             services.AddScoped<IGetWorkshopWorkloadUseCase, GetWorkshopWorkloadUseCase>();
@@ -32,7 +39,7 @@ namespace Application.DependencyInjection
             services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
         }
 
-        internal static void AddValidators(this IServiceCollection services)
+        private static void AddValidators(this IServiceCollection services)
         {
             services.AddTransient<IValidator<CreateWorkshopInput>, CreateWorkshopInputValidator>();
             services.AddTransient<IValidator<CreateCustomerInput>, CreateCustomerInputValidator>();

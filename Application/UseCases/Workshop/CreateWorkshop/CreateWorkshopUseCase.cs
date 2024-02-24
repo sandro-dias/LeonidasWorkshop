@@ -29,7 +29,7 @@ namespace Application.UseCases.CreateWorkshop
                 return workshop;
             }
 
-            workshop = Domain.Entities.Workshop.CreateWorkshop(input.Name, input.Workload);
+            workshop = Domain.Entities.Workshop.CreateWorkshop(input.Name, input.Workload, input.CNPJ, input.Password);
             workshop = await _unitOfWork.WorkshopRepository.AddAsync(workshop);
             await _unitOfWork.CommitAsync();
             return workshop;
