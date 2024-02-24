@@ -14,6 +14,8 @@ namespace Infrastructure.Data.Configurations
             builder.Property(x => x.WorkShopId).HasColumnName("ID_OFICINA").HasColumnType("INT");
             builder.Property(x => x.Workload).HasColumnName("CARGA").HasColumnType("INT");
             builder.Property(x => x.Name).HasColumnName("NOME").HasColumnType("VARCHAR");
+            builder.Property(x => x.CNPJ).HasColumnName("CNPJ").HasColumnType("VARCHAR");
+            builder.Property(x => x.Password).HasColumnName("SENHA").HasColumnType("VARCHAR");
         }
     }
 }

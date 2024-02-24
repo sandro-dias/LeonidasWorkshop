@@ -1,5 +1,6 @@
 ﻿using Application.UseCases.Customer.CreateCustomer;
 using Application.UseCases.Customer.CreateCustomer.Input;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ namespace Api.Controllers.Customer
         }
 
         [HttpPost]
+        [Authorize]
         [Route("api/create-customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

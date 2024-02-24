@@ -3,6 +3,7 @@ using Application.UseCases.Service.CreateService.Input;
 using Application.UseCases.Service.DeleteService;
 using Application.UseCases.Service.GetServices;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,7 @@ namespace Api.Controllers.Service
         private readonly IDeleteServiceUseCase _deleteServiceUseCase = deleteServiceUseCase;
 
         [HttpPost]
+        [Authorize]
         [Route("api/create-service/{workShopId}/{customerId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,6 +44,7 @@ namespace Api.Controllers.Service
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/get-services/{workShopId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -61,6 +64,7 @@ namespace Api.Controllers.Service
         }
 
         [HttpDelete]
+        [Authorize]
         [Route("api/delete-service/{serviceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

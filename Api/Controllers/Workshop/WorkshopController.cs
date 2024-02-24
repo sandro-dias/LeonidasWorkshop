@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.CreateWorkshop;
 using Application.UseCases.CreateWorkshop.Input;
 using Application.UseCases.GetWorkshopWorkload;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,7 @@ namespace Api.Controllers.PostWorkshop
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/get-workshop-workload/{workShopId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
